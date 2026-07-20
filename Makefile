@@ -1,0 +1,51 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: hounejja <hounejja@student.1337.ma>        +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/04/21 14:41:13 by nafarid           #+#    #+#              #
+#    Updated: 2026/05/27 23:55:13 by hounejja         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+NAME = minishell
+SRC = main.c bultins/echo_cmd.c \
+		bultins/cd_cmd.c bultins/pwd_cmd.c bultins/envir_utils.c bultins/cd_cmd_utils.c bultins/export_cmd.c bultins/envir.c \
+		tokens/tokenizer.c tokens/tokens_utils.c parsing/parse.c parsing/parse_utils.c executing/executing_cmd.c executing/executing_cmd_utils.c \
+		env_to_lst.c parsing/parse_helpers.c parsing/parse_opers.c cleaning/quote_del.c change_stat.c p_expansion.c \
+		argument_count.c lstadd_front.c lstadd_back.c heredoc.c signals.c lst_new_ele.c tokens/toks_trim.c \
+		executing/run_child.c executing/dups.c executing/executing_utils.c bultins/unset_cmd.c bultins/exit_cmd.c \
+		tokens/lstadd_back_token.c env_lst_to_arr.c tokens/lst_last_token.c shell_vl.c ft_lstlast.c utils.c helpers.c \
+		executing/run_child_utils.c cleaning/cleanup.c heredoc_utils.c executing/executing_utils2.c bultins/ft_type.c \
+		segments.c bultins/ft_alias.c
+		
+OBJS = $(SRC:.c=.o)
+CC = cc
+CFLAGS = -Wall -Werror -Wextra -g
+LIBFT_DIR = libft
+FLAGS = -lreadline
+LIB = $(LIBFT_DIR)/libft.a
+all: $(NAME)
+
+$(NAME) : $(OBJS)
+	@cd $(LIBFT_DIR) && $(MAKE) -s
+	@$(CC) $(CFLAGS) $(OBJS) $(LIB) -o $(NAME) $(FLAGS)
+
+%.o :%.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	@cd $(LIBFT_DIR) && $(MAKE) -s clean
+	@rm -f $(OBJS)
+
+fclean: clean
+	@cd $(LIBFT_DIR) && $(MAKE) -s fclean
+	@rm -f $(NAME)
+
+re: fclean all
+
+ra: all clean
+
+.PHONY: all clean fclean re ra
